@@ -1,0 +1,62 @@
+enum OrderPaymentStatus {
+    UNPAID
+    PAID
+}
+
+enum OrderStatus {
+    PLACED
+    CONFIRMED
+    SHIPPED
+    DELIVERED
+    CANCELLED
+}
+
+model order {
+    id            String         @id @db.Uuid
+    invoiceNumber Int?           @unique @default(autoincrement())
+    userId        String?        @db.Uuid
+    user          User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    addressId     String?        @db.Uuid
+    transactionId String?        @unique @db.Uuid
+    transaction   transaction?   @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+    orderStatus   OrderStatus    @default(PLACED)
+    address       Address?       @relation(fields: [addressId], references: [id], onDelete: Cascade)
+    productorders productorder[]
+}
+
+model productorder {
+    id String @id @db.Uuid
+
+    categoryId String?   @db.Uuid
+    category   category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+    orderId String? @db.Uuid
+    order   order?  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+    productId String?  @db.Uuid
+    product   product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+    product_name          String?
+    product_description   String?
+    product_price         Decimal?
+    offer_price           Decimal?
+    product_quantity_type QuantityType?
+
+    variant_label         String?
+    variant_quantity      Int?
+    variant_quantity_type QuantityType?
+    variant_price         Decimal?
+    custom                Json?
+
+    productVariantId String?          @db.Uuid
+    productVariant   product_variant? @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+
+    quantity   Int
+    totalPrice Int
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    images    images[]
+}

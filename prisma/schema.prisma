@@ -1,0 +1,315 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model role {
+  id          String   @id @db.Uuid
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]
+}
+
+model User {
+  id          String  @id @db.Uuid
+  email       String  @unique
+  password    String?
+  firstName   String
+  lastName    String?
+  gender      String?
+  countryCode String?
+  phone       String?
+
+  firebaseUid String? @unique
+  isVerified  Boolean @default(false)
+  isActive    Boolean @default(true)
+  roleId      String? @db.Uuid
+  role        role?   @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  order         order[]
+  transactions  transaction[]
+  addresses     Address[]
+  verifications Verification[]
+  carts         cart[]
+  wishlists     wishlist[]
+  sessions      session[]
+}
+
+model Verification {
+  id             String  @id @db.Uuid
+  userId         String  @db.Uuid
+  user           User    @relation(fields: [userId], references: [id])
+  phoneVerified  Boolean @default(false)
+  verificationId String?
+  emailVerified  Boolean @default(false)
+}
+
+model collection {
+  id                  String               @id @db.Uuid
+  name                String
+  key                 String               @unique
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  sortOrder           Int?                 @default(0)
+  bannerImages        images[]
+  collection_products collection_product[]
+}
+
+model wishlist {
+  id               String           @id @db.Uuid
+  userId           String           @db.Uuid
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId        String           @db.Uuid
+  product          product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productVariantId String?          @db.Uuid
+  productVariant   product_variant? @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@unique([userId, productId, productVariantId])
+}
+
+model collection_product {
+  id           String     @id @db.Uuid
+  collectionId String     @db.Uuid
+  collection   collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  productId    String     @db.Uuid
+  product      product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, productId])
+}
+
+model cart {
+  id               String           @id @db.Uuid
+  userId           String           @db.Uuid
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId        String           @db.Uuid
+  product          product          @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productVariantId String?          @db.Uuid
+  productVariant   product_variant? @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  custom           Json?
+  quantity         Int
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+}
+
+enum AddressType {
+  HOME
+  WORK
+  OTHER
+}
+
+model Address {
+  id           String      @id @db.Uuid
+  userId       String      @db.Uuid
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  addressline1 String?
+  addressline2 String?
+  city         String?
+  state        String?
+  country      String?
+  pinCode      String?
+  addressType  AddressType @default(HOME)
+  orders       order[]
+}
+
+enum QuantityType {
+  UNIT
+  KILOGRAM
+  GRAM
+  MILLILITER
+  LITER
+}
+
+model specification {
+  id                   String              @id @db.Uuid
+  productId            String?             @db.Uuid
+  product              product?            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId            String?             @db.Uuid
+  variant              product_variant?    @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  label                String
+  value                String
+  sort                 Int?
+  superspecificationId String?             @db.Uuid
+  superspecification   superspecification? @relation(fields: [superspecificationId], references: [id])
+
+  @@unique([productId, label])
+  @@unique([variantId, label])
+}
+
+model superspecification {
+  id             String          @id @db.Uuid
+  label          String
+  specifications specification[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model product {
+  id String @id @db.Uuid
+
+  name        String
+  description String?
+
+  price      Decimal
+  offerPrice Decimal?
+
+  stock          Int
+  details        String[]
+  specifications specification[]
+  quantityType   QuantityType?
+  enableOffer    Boolean         @default(false)
+
+  productorders productorder[]
+  images        images[]
+  carts         cart[]
+  links         links[]
+  rating        Decimal?
+  deleted       Boolean        @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  categoryId         String?              @db.Uuid
+  category           category?            @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subcategoryId      String?              @db.Uuid
+  subcategory        subcategory?         @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
+  productVariants    product_variant[]
+  collectionProducts collection_product[]
+  wishlists          wishlist[]
+  linkedProducts     linked_product[]
+}
+
+model links {
+  id        String   @id @db.Uuid
+  productId String   @db.Uuid
+  product   product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  label     String
+  link      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model linked_product {
+  id        String   @id @db.Uuid
+  productId String   @db.Uuid
+  product   product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model images {
+  id               String           @id @db.Uuid
+  productId        String?          @db.Uuid
+  product          product?         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productVariantId String?          @db.Uuid
+  productVariant   product_variant? @relation(fields: [productVariantId], references: [id], onDelete: Cascade)
+  categoryId       String?          @db.Uuid
+  category         category?        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  subcategoryId    String?          @db.Uuid
+  subcategory      subcategory?     @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
+  url              String
+  blurHash         String?
+  productorder     productorder?    @relation(fields: [productorderId], references: [id], onDelete: Cascade)
+  productorderId   String?          @db.Uuid
+  collection       collection?      @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  collectionId     String?          @db.Uuid
+
+  @@unique([url, collectionId])
+  @@unique([url, productId])
+  @@unique([url, productVariantId])
+  @@unique([url, categoryId])
+  @@unique([url, subcategoryId])
+  @@unique([url, productorderId])
+}
+
+model product_variant {
+  id        String   @id @db.Uuid
+  productId String?  @db.Uuid
+  product   product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  deleted   Boolean  @default(false)
+  label     String?
+  sortOrder Int?     @default(0)
+
+  quantityType   QuantityType?
+  rating         Decimal?
+  price          Decimal
+  offerPrice     Decimal?
+  enableOffer    Boolean         @default(false)
+  stock          Int
+
+  specifications specification[]
+  productorders  productorder[]
+  images         images[]
+  carts          cart[]
+  wishlists      wishlist[]
+
+  @@index([productId, sortOrder])
+}
+
+model category {
+  id            String         @id @db.Uuid
+  name          String         @unique
+  description   String?
+  products      product[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subcategories subcategory[]
+  images        images[]
+  productorders productorder[]
+}
+
+model subcategory {
+  id          String    @id @db.Uuid
+  name        String
+  description String?
+  categoryId  String?   @db.Uuid
+  category    category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  products    product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  images      images[]
+}
+
+model notices {
+  id        String   @id @db.Uuid
+  content   String
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model faqs {
+  id        String   @id @db.Uuid
+  question  String
+  answer    String
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum sessionType {
+  ACCESS
+  PASSWORD_RESET
+}
+
+model session {
+  id              String      @id @db.Uuid
+  user_id         String      @db.Uuid
+  token           String?
+  sessionType     sessionType @default(ACCESS)
+  user            User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  ipaddress       String
+  useragent       String?
+  devicetype      String?
+  operatingsystem String?
+  browser         String?
+  timestamp       DateTime    @default(now())
+}

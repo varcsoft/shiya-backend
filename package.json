@@ -1,0 +1,70 @@
+{
+  "name": "varcsoft-ecommerce-backend",
+  "version": "1.0.0",
+  "description": "Production-grade backend API for Varcsoft Ecommerce platform",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "api",
+    "backend",
+    "production",
+    "Varcsoft Ecommerce",
+    "prisma",
+    "postgresql"
+  ],
+  "author": "Varcsoft Team",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.888.0",
+    "@aws-sdk/client-sesv2": "^3.994.0",
+    "@aws-sdk/s3-request-presigner": "^3.937.0",
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "@sendgrid/mail": "^8.1.6",
+    "axios": "^1.12.2",
+    "bcryptjs": "^3.0.2",
+    "blurhash": "^2.0.5",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "multer-s3": "^3.0.1",
+    "nodemailer": "^7.0.6",
+    "prisma-better-errors": "^1.0.4",
+    "razorpay": "^2.9.6",
+    "sharp": "^0.34.5",
+    "socket.io": "^4.8.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "ua-parser-js": "^2.0.0",
+    "uuid": "^13.0.0",
+    "winston": "^3.17.0",
+    "xlsx": "^0.18.5",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "prisma": "^7.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Devskarma/backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Devskarma/backend/issues"
+  },
+  "homepage": "https://github.com/Devskarma/backend#readme"
+}
