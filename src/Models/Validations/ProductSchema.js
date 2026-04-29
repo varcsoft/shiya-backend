@@ -6,7 +6,7 @@ import { imageSchema } from "./ImageSchema.js";
 const specificationsSchema = z
   .array(
     z.object({
-      id: z.uuidv7(),
+      id: z.uuidv7().optional(),
       deleted: z.boolean().optional().default(false),
       label: z.string().optional(),
       value: z.string().optional(),

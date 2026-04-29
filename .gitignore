@@ -2,3 +2,4 @@
 .DS_Store
 /logs
 /keys/firebase/shiya.json
+.env

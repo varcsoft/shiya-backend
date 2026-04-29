@@ -137,6 +137,8 @@ model specification {
   label                String
   value                String
   sort                 Int?
+  deleted              Boolean @default(false)
+  
   superspecificationId String?             @db.Uuid
   superspecification   superspecification? @relation(fields: [superspecificationId], references: [id])
 
@@ -147,6 +149,7 @@ model specification {
 model superspecification {
   id             String          @id @db.Uuid
   label          String
+  deleted          Boolean @default(false)
   specifications specification[]
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
