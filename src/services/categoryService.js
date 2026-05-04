@@ -43,7 +43,7 @@ const getCategoryById = async (id) => {
       subcategories: true,
       products: {
         where: {
-          isDeleted: false,
+          deleted: false,
         },
         include: {
           images: true,
