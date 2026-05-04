@@ -1,5 +1,5 @@
 import { check } from "zod";
-import { checkServiceability } from "./sequel247Service.js";
+// import { checkServiceability } from "./sequel247Service.js";
 import prisma, { generateUUID } from "../config/database.js";
 
 const data = "";
