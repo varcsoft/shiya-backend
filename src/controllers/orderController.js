@@ -100,6 +100,7 @@ const createOrderC = async (req, res) => {
       currency: "INR",
       orderId: order.id,
     });
+    console.log("razorpayOrder", razorpayOrder);
     const transaction = await createTransaction({
       userId: req.user.id,
       gatewayOrderId: razorpayOrder.id,
@@ -203,6 +204,7 @@ const createOrderFromCartC = async (req, res) => {
       currency: "INR",
       orderId: order.id,
     });
+    console.log("razorpayOrder", razorpayOrder);
     const transaction = await createTransaction({
       userId: req.user.id,
       gatewayOrderId: razorpayOrder.id,

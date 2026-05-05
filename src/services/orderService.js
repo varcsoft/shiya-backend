@@ -1,9 +1,12 @@
+import { OrderType } from "@prisma/client";
 import prisma, { generateUUID } from "../config/database.js";
 
 const createOrder = async (orderData) => {
   const order = await prisma.order.create({
     data: {
       id: generateUUID(),
+      orderType:
+        process.env.MODE_RAZORPAY === "TEST" ? OrderType.TEST : OrderType.LIVE,
       ...orderData,
     },
   });

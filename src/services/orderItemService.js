@@ -1,3 +1,4 @@
+import { OrderType } from "@prisma/client";
 import prisma, { generateUUID } from "../config/database.js";
 
 const createOrderItem = async (orderItemData) => {

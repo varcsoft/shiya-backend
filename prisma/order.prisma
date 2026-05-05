@@ -10,7 +10,10 @@ enum OrderStatus {
     DELIVERED
     CANCELLED
 }
-
+enum OrderType {
+  TEST
+  LIVE
+}
 model order {
     id            String         @id @db.Uuid
     invoiceNumber Int?           @unique @default(autoincrement())
@@ -19,6 +22,7 @@ model order {
     createdAt     DateTime       @default(now())
     updatedAt     DateTime       @updatedAt
     addressId     String?        @db.Uuid
+    orderType     OrderType      @default(TEST)
     transactionId String?        @unique @db.Uuid
     transaction   transaction?   @relation(fields: [transactionId], references: [id], onDelete: Cascade)
     orderStatus   OrderStatus    @default(PLACED)
