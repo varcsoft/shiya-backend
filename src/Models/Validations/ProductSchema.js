@@ -1,4 +1,4 @@
-import pkg from '@prisma/client';
+import pkg from "@prisma/client";
 const { QuantityType } = pkg;
 import z from "zod";
 import { imageSchema } from "./ImageSchema.js";
@@ -32,7 +32,7 @@ const variantSchema = z
       .optional(),
     specifications: specificationsSchema,
     enableOffer: z.boolean().optional().default(false),
-    images: z.array(imageSchema).min(1, "At least one image is required"),
+    images: z.array(imageSchema).min(1, "At least one image is required").optional().nullable(),
   })
   .strict();
 
@@ -53,7 +53,11 @@ const variantStandaloneSchema = z
       .optional(),
     specifications: specificationsSchema,
     enableOffer: z.boolean().default(false),
-    images: z.array(imageSchema).min(1, "At least one image is required"),
+    images: z
+      .array(imageSchema)
+      .min(1, "At least one image is required")
+      .optional()
+      .nullable(),
   })
   .strict();
 
@@ -66,7 +70,11 @@ const updateVariantStandaloneSchema = z
       .min(0, "Rating must be non-negative")
       .max(5, "Rating must be less than or equal to 5"),
     price: z.number().min(0, "Price must be non-negative"),
-    images: z.array(imageSchema).min(1, "At least one image is required"),
+    images: z
+      .array(imageSchema)
+      .min(1, "At least one image is required")
+      .optional()
+      .nullable(),
     quantityType: z.enum(QuantityType, "Invalid quantity type"),
     offerPrice: z
       .number()
@@ -109,7 +117,8 @@ const updateProductSchema = productSchema
   .omit({
     productVariants: true,
   })
-  .strict().partial();
+  .strict()
+  .partial();
 
 export {
   productSchema,
