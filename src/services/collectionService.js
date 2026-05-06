@@ -26,6 +26,13 @@ const getCollections = async () => {
   const collections = await prisma.collection.findMany({
     include: {
       collection_products: {
+        where: {
+          product: {
+            NOT: {
+              deleted: true,
+            },
+          },
+        },
         include: {
           product: {
             include: {
@@ -38,7 +45,15 @@ const getCollections = async () => {
       },
       _count: {
         select: {
-          collection_products: true,
+          collection_products: {
+            where: {
+              product: {
+                NOT: {
+                  deleted: true,
+                },
+              },
+            },
+          },
         },
       },
     },
@@ -113,14 +128,12 @@ const updateCollection = async (key, collectionData) => {
 const deleteCollectionItems = async (key) => {
   await prisma.collection_product.deleteMany({
     where: {
-      collection:{
+      collection: {
         key,
       },
     },
   });
 };
-
-
 
 export {
   createCollection,
