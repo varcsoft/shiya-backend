@@ -72,7 +72,7 @@ const updateVariantStandaloneSchema = z
     price: z.number().min(0, "Price must be non-negative"),
     images: z
       .array(imageSchema)
-      .min(1, "At least one image is required")
+      .min(0, "At least one image is required")
       .optional()
       .nullable(),
     quantityType: z.enum(QuantityType, "Invalid quantity type"),
