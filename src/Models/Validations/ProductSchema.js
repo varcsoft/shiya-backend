@@ -32,7 +32,7 @@ const variantSchema = z
       .optional(),
     specifications: specificationsSchema,
     enableOffer: z.boolean().optional().default(false),
-    images: z.array(imageSchema).min(1, "At least one image is required").optional().nullable(),
+    images: z.array(imageSchema).min(0, "At least one image is required").optional().nullable(),
   })
   .strict();
 
@@ -55,7 +55,7 @@ const variantStandaloneSchema = z
     enableOffer: z.boolean().default(false),
     images: z
       .array(imageSchema)
-      .min(1, "At least one image is required")
+      .min(0, "At least one image is required")
       .optional()
       .nullable(),
   })
