@@ -5,9 +5,6 @@ const cartSchema = z
     productId: z.uuidv7(),
     productVariantId: z.uuidv7().optional(),
     quantity: z.number().int().min(1, "Quantity is required"),
-    custom: z.object({
-      ringsize: z.string("Ring size is required"),
-    }),
   })
   .strict();
 
