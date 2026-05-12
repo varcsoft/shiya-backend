@@ -74,8 +74,8 @@ export const env = {
       : process.env.RAZORPAY_KEY_SECRET,
 
   RAZORPAY_WEBHOOK_SECRET: process.env.RAZORPAY_WEBHOOK_SECRET,
-
-  // Reflect Mail Configuration
+  EMAIL_LOGO_URL: process.env.EMAIL_LOGO_URL,
+   // Reflect Mail Configuration
   REFLECT_SMTP_HOST: process.env.REFLECT_SMTP_HOST,
   REFLECT_SMTP_PORT: process.env.REFLECT_SMTP_PORT,
   REFLECT_SMTP_USERNAME: process.env.REFLECT_SMTP_USERNAME,

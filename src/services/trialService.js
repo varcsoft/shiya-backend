@@ -1,5 +1,6 @@
 import appConfig from "../config/app.js";
 import transporter from "../config/reflectMail.js";
+import resetPasswordEmail from "../templates/mail/resetPasswordEmail.js";
 
 const data = "";
 const sendEmail = async (email, subject, text) => {
@@ -9,7 +10,11 @@ const sendEmail = async (email, subject, text) => {
     replyTo: appConfig.replyTo,
     subject: subject,
     text: text,
-    html: `<h1>${text}</h1>`,
+    html: resetPasswordEmail({
+      firstName: "Venky",
+      resetLink: "https://shiya.in/reset-password",
+      expiresInMinutes: 30,
+    }),
   });
 };
 sendEmail(

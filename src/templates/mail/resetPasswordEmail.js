@@ -1,7 +1,11 @@
 import { env } from "../../config/env.js";
 
-const resetPasswordEmail = ({ firstName, resetLink, expiresInMinutes = 30 }) => {
-  const logoUrl = env.EMAIL_LOGO_URL || "https://sirijewelz.com/logo.png";
+const resetPasswordEmail = ({
+  firstName,
+  resetLink,
+  expiresInMinutes = 30,
+}) => {
+  const logoUrl = env.EMAIL_LOGO_URL || "https://shiya.in/logo.png";
   return `
 <!DOCTYPE html>
 <html lang="en">
