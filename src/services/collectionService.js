@@ -80,9 +80,18 @@ const getCollectionByKey = async (key) => {
     },
     include: {
       collection_products: {
+        where: {
+          product: {
+            NOT: {
+              deleted: true,
+            },
+          },
+        },
         include: {
           product: {
+            
             include: {
+              
               productVariants: true,
               images: true,
             },

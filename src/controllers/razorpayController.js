@@ -9,6 +9,7 @@ import {
   PAYMENT_FAILED,
   ORDER_CREATED,
   ORDER_CANCELLED,
+  ORDER_PAID,
 } from "../utils/constants.js";
 
 const processOrder = async (req, res) => {
@@ -21,7 +22,7 @@ const processOrder = async (req, res) => {
   if (req.signatureIsValid) {
     let payment = payload.payment.entity;
     switch (event) {
-      case PAYMENT_CAPTURED:
+      case ORDER_PAID:
         await markCaptured({
           gatewayOrderId: payment.order_id,
           gatewayPaymentId: payment.id,
@@ -39,7 +40,6 @@ const processOrder = async (req, res) => {
           contact: payment.contact,
         });
         break;
-
       case PAYMENT_FAILED:
         await markFailed({ gatewayOrderId: payment.order_id });
         break;
@@ -83,7 +83,6 @@ const processPayment = async (req, res) => {
             contact: payment.contact,
           });
           break;
-
         case PAYMENT_FAILED:
           await markFailed({ gatewayOrderId: payment.order_id });
           break;

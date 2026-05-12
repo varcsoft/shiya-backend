@@ -4,4 +4,5 @@ export const PAYMENT_AUTHORIZED = "payment.authorized";
 
 export const ORDER_CANCELLED = "order.cancelled";
 export const ORDER_CREATED = "order.created";
+export const ORDER_PAID = "order.paid";
 
