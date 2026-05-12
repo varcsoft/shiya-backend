@@ -6,8 +6,6 @@ if (!process.env.PORT) {
   throw new Error("PORT is not defined");
 }
 
-const APP_MODE = process.env.MODE_APP || "TEST";
-const SENDGRID_MODE = process.env.MODE_SENDGRID || "TEST";
 const SEQUEL_API_MODE = process.env.MODE_SEQUEL_API || "TEST";
 const RAZORPAY_MODE = process.env.MODE_RAZORPAY || "TEST";
 

@@ -17,7 +17,7 @@ const resetPasswordEmail = ({
     body {
       margin: 0;
       padding: 0;
-      background-color: #ff;
+      background-color: #ffffff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
       color: #222222;
     }
@@ -37,13 +37,13 @@ const resetPasswordEmail = ({
     }
 
     .header {
-      background-color: #006c67;
+      background-color: #ffffffff;
       padding: 24px 16px;
       text-align: center;
     }
 
     .logo {
-      width: 72px;
+      width: 90px;
       height: auto;
       margin-bottom: 10px;
     }
@@ -52,7 +52,7 @@ const resetPasswordEmail = ({
       font-size: 22px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: #f3c6a6;
+      color: #6e141bff;
     }
 
     .tagline {
@@ -75,14 +75,14 @@ const resetPasswordEmail = ({
     }
 
     .highlight {
-      color: #c98a6f;
+      color: #000000f5;
       font-weight: 600;
     }
 
     .cta-button {
       display: inline-block;
       margin-top: 10px;
-      background-color: #c98a6f;
+      background-color: #000000ea;
       color: #ffffff !important;
       padding: 10px 22px;
       border-radius: 999px;
@@ -127,11 +127,9 @@ const resetPasswordEmail = ({
       <div class="header">
         <img
           src="${logoUrl}"
-          alt="Siri Jewelz Logo"
+          alt="Shiya Logo"
           class="logo"
         />
-        <div class="brand-name">Siri Jewelz</div>
-        <div class="tagline">Shine Beyond Time</div>
       </div>
       <div class="content">
         <p>Hi <span class="highlight">${firstName}</span>,</p>

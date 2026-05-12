@@ -1,26 +1,20 @@
 import appConfig from "../config/app.js";
-import transporter from "../config/reflectMail.js";
+import transporter, { sendEmail } from "../config/reflectMail.js";
 import resetPasswordEmail from "../templates/mail/resetPasswordEmail.js";
 
 const data = "";
-const sendEmail = async (email, subject, text) => {
-  await transporter.sendMail({
-    from: appConfig.salesEmail,
-    to: email,
-    replyTo: appConfig.replyTo,
-    subject: subject,
-    text: text,
-    html: resetPasswordEmail({
-      firstName: "Venky",
-      resetLink: "https://shiya.in/reset-password",
-      expiresInMinutes: 30,
-    }),
-  });
-};
-sendEmail(
-  // "techshiya@gmail.com",
-  "varcsoft@gmail.com",
-  "Order Confirmation",
-  "Your order has been confirmed!",
-);
+
+await sendEmail({
+  from: "Shiya <" + appConfig.authEmail + ">",
+  to: "varcsoft@gmail.com",
+  replyTo: appConfig.replyTo,
+  subject: "Reset Password Request",
+  text: "Your password reset has been requested!",
+  html: resetPasswordEmail({
+    firstName: "Venky",
+    resetLink: "https://shiya.in/reset-password",
+    expiresInMinutes: 30,
+  }),
+});
+
 export default data;

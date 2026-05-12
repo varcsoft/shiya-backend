@@ -11,12 +11,13 @@ import {
   updateUser,
 } from "../services/userService.js";
 import { env } from "../config/env.js";
-import sendEmail from "../config/sendgrid.js";
+import { sendEmail } from "../config/reflectMail.js";
 import { resetPasswordEmail, welcomeEmail } from "../templates/mail/index.js";
 import { createSession } from "../services/sessionService.js";
 import { getUserSysDetails } from "../config/requestConfig.js";
 import { sessionType } from "@prisma/client";
 import crypto from "crypto";
+import appConfig from "../config/app.js";
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -196,16 +197,18 @@ const forgotPassword = async (req, res) => {
     token,
     sessionType: sessionType.RESET_PASSWORD,
   });
-  const resetLink = `${env.RESET_PASSWORD_URL}${token}`;
-  await sendEmail(
-    user.email,
-    "Password Reset",
-    "",
-    resetPasswordEmail({
+  const resetLink = `${env.RESET_PASSWORD_URL}?token=${token}`;
+  await sendEmail({
+    from: "Shiya <" + appConfig.authEmail + ">",
+    to: user.email,
+    replyTo: appConfig.replyTo,
+    subject: "Reset Password Request",
+    text: "",
+    html: resetPasswordEmail({
       firstName: user.firstName,
       resetLink,
     }),
-  );
+  });
 
   return responseConfig.sendSuccess(res, 200, {
     message: "Password reset email sent",
@@ -245,6 +248,7 @@ const linkFirebaseAccount = async (req, res) => {
     "Firebase account linked successfully",
   );
 };
+
 const loginWithCookies = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -261,7 +265,12 @@ const loginWithCookies = async (req, res) => {
       (!origin && referer && allowedOrigins.some((o) => referer.startsWith(o)));
 
     if (!originAllowed) {
-      return responseConfig.sendError(res, 403, 1005, "CSRF protection: invalid origin");
+      return responseConfig.sendError(
+        res,
+        403,
+        1005,
+        "CSRF protection: invalid origin",
+      );
     }
 
     const user = await getUserByEmail(email);
@@ -318,8 +327,6 @@ const loginWithCookies = async (req, res) => {
     return responseConfig.sendError(res, 401, 999);
   }
 };
-
-
 
 export default {
   loginWithCookies,
