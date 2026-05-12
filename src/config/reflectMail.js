@@ -32,8 +32,8 @@ const sendEmail = async ({
   });
 };
 
-await transporter.verify().then(() => {
-  console.log("Transporter verified");
-});
+// await transporter.verify().then(() => {
+//   console.log("Transporter verified");
+// });
 export { sendEmail };
 export default transporter;
