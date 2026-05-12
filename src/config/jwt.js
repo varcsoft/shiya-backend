@@ -13,7 +13,9 @@ const generateToken = (user) => {
     expiresIn: env.JWT_EXPIRES_IN,
   });
 };
-
+const generateResetPasswordToken = (user) => {
+  return generateToken(user);
+};
 const verifyToken = (token) => {
   try {
     return jwt.verify(token, env.JWT_SECRET);
@@ -31,4 +33,4 @@ const decodeToken = (token) => {
   }
 };
 
-export { generateToken, verifyToken, decodeToken };
+export { generateToken, generateResetPasswordToken, verifyToken, decodeToken };

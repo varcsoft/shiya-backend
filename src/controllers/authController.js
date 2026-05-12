@@ -1,7 +1,7 @@
 import { createCustomToken, verifyFirebaseToken } from "../config/firebase.js";
 import { comparePassword, hashPassword } from "../config/sec.js";
 import responseConfig from "../config/response.js";
-import { generateToken, verifyToken } from "../config/jwt.js";
+import { generateResetPasswordToken, generateToken, verifyToken } from "../config/jwt.js";
 import { sanitize } from "../config/sanitize.js";
 import prisma, { generateUUID } from "../config/database.js";
 import {
@@ -189,7 +189,7 @@ const forgotPassword = async (req, res) => {
   if (!user) {
     return responseConfig.sendError(res, 400, 1002, "User not found");
   }
-  const token = generateToken(user);
+  const token = generateResetPasswordToken(user);
   const userSysDetails = getUserSysDetails(req);
   await createSession({
     ...userSysDetails,
@@ -198,6 +198,7 @@ const forgotPassword = async (req, res) => {
     sessionType: sessionType.RESET_PASSWORD,
   });
   const resetLink = `${env.RESET_PASSWORD_URL}?token=${token}`;
+
   await sendEmail({
     from: "Shiya <" + appConfig.authEmail + ">",
     to: user.email,

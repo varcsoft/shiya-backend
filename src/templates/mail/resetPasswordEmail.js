@@ -24,7 +24,7 @@ const resetPasswordEmail = ({
 
     .wrapper {
       width: 100%;
-      background-color: #efefef;
+      background-color: #ffffffff;
       padding: 24px 0;
     }
 
