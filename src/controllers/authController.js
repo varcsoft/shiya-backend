@@ -84,12 +84,13 @@ const register = async (req, res) => {
     sessionType: sessionType.ACCESS,
   });
   const sanitizedUser = sanitize(user);
-  await sendEmail(
-    user.email,
-    `Welcome to ${env.APP_NAME}`,
-    "",
-    welcomeEmail({ firstName: user.firstName }),
-  );
+  await sendEmail({
+    from: appConfig.authEmail,
+    to: user.email,
+    replyTo: appConfig.replyTo,
+    subject: "Welcome to Shya Studios",
+    html: welcomeEmail({ firstName: user.firstName }),
+  });
   responseConfig.sendSuccess(res, 201, "User registered successfully", {
     token,
     user: sanitizedUser,
@@ -152,12 +153,13 @@ const firebaseAuth = async (req, res) => {
     // Generate JWT token for our application
     const token = generateToken(user);
     if (register) {
-      await sendEmail(
-        user.email,
-        `Welcome to ${env.APP_NAME}`,
-        "",
-        welcomeEmail({ firstName: user.firstName }),
-      );
+      await sendEmail({
+        from: appConfig.authEmail,
+        to: user.email,
+        replyTo: appConfig.replyTo,
+        subject: "Welcome to Shya Studios",
+        html: welcomeEmail({ firstName: user.firstName }),
+      });
     }
     await createSession({
       ...userSysDetails,
@@ -204,7 +206,6 @@ const forgotPassword = async (req, res) => {
   const resetLink = `${env.RESET_PASSWORD_URL}?token=${token}`;
 
   await sendEmail({
-    name: "Shiya Studios",
     from: appConfig.authEmail,
     to: user.email,
     replyTo: appConfig.replyTo,

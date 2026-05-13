@@ -3,6 +3,7 @@ const { TransactionStatus } = pkg;
 import prisma, { generateUUID } from "../config/database.js";
 import { sendEmail } from "../config/reflectMail.js";
 import orderConfirmationEmail from "../templates/mail/orderConfirmationEmail.js";
+import appConfig from "../config/app.js";
 
 const createTransaction = async ({
   userId,
@@ -69,7 +70,6 @@ const markCaptured = async ({
   console.log("transaction productorders", transaction.order.productorders);
 
   await sendEmail({
-    name: env.APP_NAME,
     from: appConfig.authEmail,
     to: transaction.user.email,
     replyTo: appConfig.replyTo,
