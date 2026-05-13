@@ -4,9 +4,6 @@ import { myCors } from "./config/cors.js";
 import { startServer } from "./config/server.js";
 import { initRoutes } from "./routes/index.js";
 
-// import seeddb from "./config/seeder.js";
-// import { welcomeEmail } from "./templates/mail/index.js";
-// import trialService from "./services/trialService.js"
 try {
   const app = express();
   app.use(express.json({ limit: "10mb" }));

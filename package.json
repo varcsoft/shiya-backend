@@ -26,7 +26,6 @@
     "@aws-sdk/s3-request-presigner": "^3.937.0",
     "@prisma/adapter-pg": "^7.3.0",
     "@prisma/client": "^7.3.0",
-    "@sendgrid/mail": "^8.1.6",
     "axios": "^1.12.2",
     "bcryptjs": "^3.0.2",
     "blurhash": "^2.0.5",

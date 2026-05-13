@@ -1,7 +1,7 @@
 import pkg from "@prisma/client";
 const { TransactionStatus } = pkg;
 import prisma, { generateUUID } from "../config/database.js";
-import sendEmail from "../config/sendgrid.js";
+import { sendEmail } from "../config/reflectMail.js";
 import orderConfirmationEmail from "../templates/mail/orderConfirmationEmail.js";
 
 const createTransaction = async ({
@@ -92,7 +92,7 @@ const markCaptured = async ({
       paymentMethod: transaction.method,
       transactionId: transaction.id,
       billNumber: true,
-      bisHallmark:true,
+      bisHallmark: true,
       certificateAvailable: true,
       shippingAddress:
         transaction.order.address.addressline1 +

@@ -1,7 +1,11 @@
 import { createCustomToken, verifyFirebaseToken } from "../config/firebase.js";
 import { comparePassword, hashPassword } from "../config/sec.js";
 import responseConfig from "../config/response.js";
-import { generateResetPasswordToken, generateToken, verifyToken } from "../config/jwt.js";
+import {
+  generateResetPasswordToken,
+  generateToken,
+  verifyToken,
+} from "../config/jwt.js";
 import { sanitize } from "../config/sanitize.js";
 import prisma, { generateUUID } from "../config/database.js";
 import {
@@ -200,11 +204,11 @@ const forgotPassword = async (req, res) => {
   const resetLink = `${env.RESET_PASSWORD_URL}?token=${token}`;
 
   await sendEmail({
-    from: "Shiya <" + appConfig.authEmail + ">",
+    name: "Shiya Studios",
+    from: appConfig.authEmail,
     to: user.email,
     replyTo: appConfig.replyTo,
     subject: "Reset Password Request",
-    text: "",
     html: resetPasswordEmail({
       firstName: user.firstName,
       resetLink,

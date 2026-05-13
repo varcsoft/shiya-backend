@@ -27,7 +27,6 @@ export const env = {
 
   JWT_SECRET: process.env.JWT_SECRET,
 
-  SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
   JWT_SECRET_PASSWORD: process.env.JWT_SECRET_PASSWORD,
 
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "1h",
@@ -49,18 +48,6 @@ export const env = {
   FRONTEND_URL: process.env.FRONTEND_URL,
   RESET_PASSWORD_URL: process.env.RESET_PASSWORD_URL,
 
-  SEQUEL_API_BASE_URL:
-    SEQUEL_API_MODE === "TEST"
-      ? process.env.SEQUEL_API_BASE_URL_TEST
-      : process.env.SEQUEL_API_BASE_URL,
-  SEQUEL_API_TOKEN:
-    SEQUEL_API_MODE === "TEST"
-      ? process.env.SEQUEL_API_TOKEN_TEST
-      : process.env.SEQUEL_API_TOKEN,
-  SEQUEL_API_TIMEOUT_MS:
-    SEQUEL_API_MODE === "TEST"
-      ? process.env.SEQUEL_API_TIMEOUT_MS_TEST
-      : process.env.SEQUEL_API_TIMEOUT_MS,
   // Razorpay Configuration
   RAZORPAY_KEY_ID:
     RAZORPAY_MODE === "TEST"
@@ -73,10 +60,8 @@ export const env = {
 
   RAZORPAY_WEBHOOK_SECRET: process.env.RAZORPAY_WEBHOOK_SECRET,
   EMAIL_LOGO_URL: process.env.EMAIL_LOGO_URL,
-   // Reflect Mail Configuration
-  REFLECT_SMTP_HOST: process.env.REFLECT_SMTP_HOST,
-  REFLECT_SMTP_PORT: process.env.REFLECT_SMTP_PORT,
+  // Reflect Mail Configuration
+  REFLECT_API_URL: process.env.REFLECT_API_URL,
   REFLECT_SMTP_USERNAME: process.env.REFLECT_SMTP_USERNAME,
   REFLECT_SMTP_PASSWORD: process.env.REFLECT_SMTP_PASSWORD,
-  REFLECT_SMTP_FROM: process.env.REFLECT_SMTP_FROM,
 };
