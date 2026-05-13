@@ -67,7 +67,7 @@ const markCaptured = async ({
   if (!transaction.order) {
     throw new Error("Transaction not found");
   }
-  console.log("transaction productorders", transaction.order.productorders);
+  console.log("transaction order", transaction.order);
 
   await sendEmail({
     from: appConfig.authEmail,
