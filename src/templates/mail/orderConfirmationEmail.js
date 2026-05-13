@@ -46,7 +46,7 @@ const orderConfirmationEmail = (
     items: [],
   },
 ) => {
-  const logoUrl = env.EMAIL_LOGO_URL || "https://sirijewelz.com/logo.png";
+  const logoUrl = env.EMAIL_LOGO_URL
 
   const safeString = (value) => (value == null ? "" : String(value)).trim();
   const safeNumber = (value) => {
@@ -100,7 +100,7 @@ console.log(itemsRows)
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gold Jewellery Order ${orderNumber ? `#${orderNumber}` : ""}</title>
+  <title>${env.APP_NAME} Order Confirmation ${orderNumber ? `#${orderNumber}` : ""}</title>
   <style>
     body {
       margin: 0;
@@ -351,19 +351,19 @@ console.log(itemsRows)
       <div class="header">
         <img
           src="${logoUrl}"
-          alt="Siri Jewelz Logo"
+          alt="${env.APP_NAME} Logo"
           class="logo"
         />
-        <div class="brand-name">Siri Jewelz</div>
+        <div class="brand-name">${env.APP_NAME}</div>
         <div class="tagline">Shine Beyond Time</div>
-        <div class="header-title">Gold Jewellery Order</div>
+        <div class="header-title">${env.APP_NAME} Order Confirmation</div>
         <div class="order-meta">${orderNumber ? `Order Number: <strong>#${orderNumber}</strong>` : ""}</div>
       </div>
 
       <div class="content">
         <p>Hi <span class="highlight">${firstName}</span>,</p>
         <p>
-          Here are the details of your gold jewellery order with <strong>${env.APP_NAME}</strong>.
+          Here are the details of your order with <strong>${env.APP_NAME}</strong>.
         </p>
 
         <div class="card">
@@ -458,7 +458,7 @@ console.log(itemsRows)
 
       <div class="cta-section">
         <a
-          href="https://www.sirijewelz.com/orders/${data.orderId}"
+          href="${env.FRONTEND_URL}/orders/${orderId}"
           class="cta-button"
           target="_blank"
         >
@@ -471,7 +471,7 @@ console.log(itemsRows)
         <div><strong>${env.APP_NAME} Team</strong></div>
         <div style="margin-top: 8px;">
           Need help? Email us at
-          <a href="mailto:${env.SMTP_FROM}">${env.SMTP_FROM}</a>
+          <a href="mailto:${env.REFLECT_SMTP_REPLY_TO}">${env.REFLECT_SMTP_REPLY_TO}</a>
         </div>
       </div>
     </div>

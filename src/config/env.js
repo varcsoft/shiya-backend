@@ -6,11 +6,10 @@ if (!process.env.PORT) {
   throw new Error("PORT is not defined");
 }
 
-const SEQUEL_API_MODE = process.env.MODE_SEQUEL_API || "TEST";
 const RAZORPAY_MODE = process.env.MODE_RAZORPAY || "TEST";
 
 export const env = {
-  APP_NAME: process.env.APP_NAME || "Siri Jewelz",
+  APP_NAME: process.env.APP_NAME,
 
   ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS,
 
@@ -40,11 +39,6 @@ export const env = {
   // Database
   DATABASE_URL: process.env.DATABASE_URL,
 
-  SMTP_HOST: process.env.SMTP_HOST,
-  SMTP_PORT: process.env.SMTP_PORT,
-  SMTP_USERNAME: process.env.SMTP_USERNAME,
-  SMTP_PASSWORD: process.env.SMTP_PASSWORD,
-  SMTP_FROM: process.env.SMTP_FROM,
   FRONTEND_URL: process.env.FRONTEND_URL,
   RESET_PASSWORD_URL: process.env.RESET_PASSWORD_URL,
 
@@ -64,4 +58,5 @@ export const env = {
   REFLECT_API_URL: process.env.REFLECT_API_URL,
   REFLECT_SMTP_USERNAME: process.env.REFLECT_SMTP_USERNAME,
   REFLECT_SMTP_PASSWORD: process.env.REFLECT_SMTP_PASSWORD,
+  REFLECT_SMTP_REPLY_TO: process.env.REFLECT_SMTP_REPLY_TO,
 };

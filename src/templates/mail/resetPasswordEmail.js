@@ -164,7 +164,7 @@ const resetPasswordEmail = ({
         <div><strong>${env.APP_NAME} Team</strong></div>
         <div style="margin-top: 8px;">
           Need help? Email us at
-          <a href="mailto:${env.SMTP_FROM}">${env.SMTP_FROM}</a>
+          <a href="mailto:${env.REFLECT_SMTP_REPLY_TO}">${env.REFLECT_SMTP_REPLY_TO}</a>
         </div>
       </div>
     </div>

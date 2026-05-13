@@ -1,7 +1,7 @@
 import { env } from "../../config/env.js";
 
 const welcomeEmail = ({ firstName }) => {
-  const logoUrl = env.EMAIL_LOGO_URL || "https://sirijewelz.com/logo.png";
+  const logoUrl = env.EMAIL_LOGO_URL
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -118,21 +118,20 @@ const welcomeEmail = ({ firstName }) => {
       <div class="header">
         <img
           src="${logoUrl}"
-          alt="Siri Jewelz Logo"
+          alt="${env.APP_NAME} Logo"
           class="logo"
         />
-        <div class="brand-name">Siri Jewelz</div>
-        <div class="tagline">Shine Beyond Time</div>
+        <div class="brand-name">${env.APP_NAME}</div>
       </div>
       <div class="content">
         <p>Hi <span class="highlight">${firstName}</span>,</p>
         <p>Welcome to <strong>${env.APP_NAME}</strong>.</p>
         <p>
-          You are now part of a house of fine jewellery crafted to celebrate
+          You are now part of a house of fine pieces crafted to celebrate
           the moments that matter most.
         </p>
         <p>
-          Explore curated collections, discover timeless pieces, and find jewels
+          Explore curated collections, discover timeless pieces, and find pieces
           that feel made just for you.
         </p>
         <p>
@@ -153,7 +152,7 @@ const welcomeEmail = ({ firstName }) => {
         <div><strong>${env.APP_NAME} Team</strong></div>
         <div style="margin-top: 8px;">
           Need help? Email us at
-          <a href="mailto:${env.SMTP_FROM}">${env.SMTP_FROM}</a>
+          <a href="mailto:${env.REFLECT_SMTP_REPLY_TO}">${env.REFLECT_SMTP_REPLY_TO}</a>
         </div>
       </div>
     </div>

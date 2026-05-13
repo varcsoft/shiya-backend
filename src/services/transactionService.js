@@ -68,11 +68,13 @@ const markCaptured = async ({
   }
   console.log("transaction productorders", transaction.order.productorders);
 
-  await sendEmail(
-    transaction.user.email,
-    "Order Confirmation - SiriJewelz",
-    "",
-    orderConfirmationEmail({
+  await sendEmail({
+    name: env.APP_NAME,
+    from: appConfig.authEmail,
+    to: transaction.user.email,
+    replyTo: appConfig.replyTo,
+    subject: "Order Confirmation",
+    html: orderConfirmationEmail({
       orderId: transaction.order.id,
       customerName: transaction.user.firstName,
       customerEmail: transaction.user.email,
@@ -101,7 +103,7 @@ const markCaptured = async ({
         transaction.order.address.state +
         transaction.order.address.pinCode,
     }),
-  );
+  });
   return prisma.transaction.update({
     where: { gateway_order_id: gatewayOrderId },
     data: {

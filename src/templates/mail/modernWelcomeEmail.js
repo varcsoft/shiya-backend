@@ -1,7 +1,7 @@
 import { env } from "../../config/env.js";
 
 const modernWelcomeEmail = ({ firstName }) => {
-  const logoUrl = env.EMAIL_LOGO_URL || "https://sirijewelz.com/logo.png";
+  const logoUrl = env.EMAIL_LOGO_URL || "https://shiya.in/fulllogo.svg";
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -153,13 +153,12 @@ const modernWelcomeEmail = ({ firstName }) => {
       <div class="hero">
         <img
           src="${logoUrl}"
-          alt="Siri Jewelz Logo"
+          alt="${env.APP_NAME} Logo"
           class="hero-logo"
         />
-        <div class="hero-title">Siri Jewelz</div>
-        <div class="hero-tagline">Shine Beyond Time</div>
+        <div class="hero-title">${env.APP_NAME}</div>
         <div class="hero-text">
-          A curated world of fine jewellery designed to glow softly today,
+          A curated world of fine pieces designed to glow softly today,
           tomorrow and beyond.
         </div>
         <div class="pill">Welcome to ${env.APP_NAME}</div>
@@ -199,7 +198,7 @@ const modernWelcomeEmail = ({ firstName }) => {
         <div><strong>${env.APP_NAME} Team</strong></div>
         <div style="margin-top: 8px;">
           Need help? Email us at
-          <a href="mailto:${env.SMTP_FROM}">${env.SMTP_FROM}</a>
+          <a href="mailto:${env.REFLECT_SMTP_REPLY_TO}">${env.REFLECT_SMTP_REPLY_TO}</a>
         </div>
       </div>
     </div>
