@@ -458,7 +458,7 @@ console.log(itemsRows)
 
       <div class="cta-section">
         <a
-          href="${env.FRONTEND_URL}/orders/${orderId}"
+          href="${env.FRONTEND_URL}/orders/${data.orderId}"
           class="cta-button"
           target="_blank"
         >
