@@ -14,5 +14,16 @@ const createRazorpayOrder = async (data) => {
     return error;
   }
 };
+const refundRazorpayOrder = async ({ paymentId }) => {
+  try {
+    const refund = await razorpayInstance.payments.refund({
+      paymentId,
+    });
+    return refund;
+  } catch (error) {
+    console.log("error", error);
+    return error;
+  }
+};
 
-export { createRazorpayOrder };
+export { createRazorpayOrder, refundRazorpayOrder };

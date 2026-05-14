@@ -121,7 +121,6 @@ const welcomeEmail = ({ firstName }) => {
           alt="${env.APP_NAME} Logo"
           class="logo"
         />
-        <div class="brand-name">${env.APP_NAME}</div>
       </div>
       <div class="content">
         <p>Hi <span class="highlight">${firstName}</span>,</p>

@@ -210,7 +210,7 @@ await sendEmail({
     updatedAt: "2023-12-01 12:00:00",
     expectedDeliveryDate: "2023-12-05",
     trackingNumber: "1234567890",
-    courierName: "FedEx",
+    courierName: "Delhivery",
     trackingUrl: "",
     orderUrl: "",
     currency: "",

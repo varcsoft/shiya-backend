@@ -13,14 +13,13 @@ import {
 } from "../services/orderService.js";
 import { getVariantByVariantAndProductId } from "../services/productVariantService.js";
 import { getProductById } from "../services/productService.js";
-import { createRazorpayOrder } from "../services/razorpayInstance.js";
+import { createRazorpayOrder } from "../services/razorpayService.js";
 import { createTransaction } from "../services/transactionService.js";
 import { getCartItems } from "../services/cartService.js";
 
 const createOrderC = async (req, res) => {
   try {
     const { products, addressId } = req.body;
-
     const addressExist = await getAddressByIdAndUserId(addressId, req.user.id);
     if (!addressExist) {
       return response.sendError(res, 400, 2006, "Address does not exist");
