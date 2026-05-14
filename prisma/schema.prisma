@@ -181,9 +181,9 @@ model product {
   updatedAt DateTime @updatedAt
 
   categoryId         String?              @db.Uuid
-  category           category?            @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category           category?            @relation(fields: [categoryId], references: [id])
   subcategoryId      String?              @db.Uuid
-  subcategory        subcategory?         @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
+  subcategory        subcategory?         @relation(fields: [subcategoryId], references: [id])
   productVariants    product_variant[]
   collectionProducts collection_product[]
   wishlists          wishlist[]

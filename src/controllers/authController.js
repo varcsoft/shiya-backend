@@ -88,7 +88,7 @@ const register = async (req, res) => {
     from: appConfig.authEmail,
     to: user.email,
     replyTo: appConfig.replyTo,
-    subject: "Welcome to Shya Studios",
+    subject: "Welcome to Shiya Studios",
     html: welcomeEmail({ firstName: user.firstName }),
   });
   responseConfig.sendSuccess(res, 201, "User registered successfully", {
@@ -157,7 +157,7 @@ const firebaseAuth = async (req, res) => {
         from: appConfig.authEmail,
         to: user.email,
         replyTo: appConfig.replyTo,
-        subject: "Welcome to Shya Studios",
+        subject: "Welcome to Shiya Studios",
         html: welcomeEmail({ firstName: user.firstName }),
       });
     }
