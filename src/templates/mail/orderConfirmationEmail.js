@@ -1,3 +1,4 @@
+import appConfig from "../../config/app.js";
 import { env } from "../../config/env.js";
 
 const formatCurrency = (value) => {
@@ -137,14 +138,14 @@ console.log(itemsRows)
       font-size: 24px;
       letter-spacing: 4px;
       text-transform: uppercase;
-      color: #f3c6a6;
+      color: ${appConfig.logoColorPrimary};
     }
 
     .tagline {
       font-size: 11px;
       letter-spacing: 3px;
       text-transform: uppercase;
-      color: #f3c6a6;
+      color: ${appConfig.logoColorPrimary};
       margin-top: 6px;
     }
 
@@ -152,7 +153,7 @@ console.log(itemsRows)
       margin-top: 10px;
       font-size: 14px;
       letter-spacing: 0.6px;
-      color: rgba(255, 255, 255, 0.92);
+      color: rgba(0, 0, 0, 1);
       text-transform: uppercase;
     }
 
@@ -168,13 +169,13 @@ console.log(itemsRows)
     }
 
     .highlight {
-      color: #c98a6f;
+      color: ${appConfig.logoColorPrimary};
       font-weight: 600;
     }
 
     .order-meta {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.92);
+      color: rgba(0, 0, 0, 1);
       margin-top: 4px;
     }
 
@@ -304,7 +305,7 @@ console.log(itemsRows)
     .cta-button {
       display: inline-block;
       margin-top: 4px;
-      background-color: #c98a6f;
+      background-color: ${appConfig.logoColorPrimary};
       color: #ffffff !important;
       padding: 10px 26px;
       border-radius: 999px;
@@ -318,12 +319,12 @@ console.log(itemsRows)
       border-top: 1px solid #f0f0f0;
       text-align: center;
       font-size: 12px;
-      color: #777777;
-      background-color: #fafafa;
+      color: #ffffff;
+      background-color: ${appConfig.logoColorPrimary};
     }
 
     .footer a {
-      color: #c98a6f;
+      color: ${appConfig.logoColorPrimary};
       text-decoration: none;
     }
 
@@ -349,7 +350,6 @@ console.log(itemsRows)
           alt="${env.APP_NAME} Logo"
           class="logo"
         />
-        <div class="brand-name">${env.APP_NAME}</div>
         <div class="header-title">${env.APP_NAME} Order Confirmation</div>
         <div class="order-meta">${orderNumber ? `Order Number: <strong>#${orderNumber}</strong>` : ""}</div>
       </div>

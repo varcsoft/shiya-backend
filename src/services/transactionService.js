@@ -64,6 +64,7 @@ const markCaptured = async ({
       },
     },
   });
+  
   if (!transaction.order) {
     throw new Error("Transaction not found");
   }
