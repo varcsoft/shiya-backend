@@ -34,7 +34,7 @@ const modernWelcomeEmail = ({ firstName }) => {
     }
 
     .hero {
-      background: linear-gradient(135deg, #006c67 0%, #0b887f 40%, #f3c6a6 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #0b887f 40%, #f3c6a6 100%);
       padding: 30px 20px 32px 20px;
       text-align: center;
       color: #ffffff;
@@ -111,7 +111,7 @@ const modernWelcomeEmail = ({ firstName }) => {
     .cta-button {
       display: inline-block;
       margin-top: 4px;
-      background-color: #006c67;
+      background-color: #ffffff;
       color: #ffffff !important;
       padding: 10px 26px;
       border-radius: 999px;

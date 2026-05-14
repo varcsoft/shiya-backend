@@ -33,7 +33,7 @@ const welcomeEmail = ({ firstName }) => {
     }
 
     .header {
-      background-color: #006c67;
+      background-color: #ffffff;
       padding: 24px 16px;
       text-align: center;
     }
@@ -78,7 +78,7 @@ const welcomeEmail = ({ firstName }) => {
     .cta-button {
       display: inline-block;
       margin-top: 10px;
-      background-color: #006c67;
+      background-color: #ffffff;
       color: #ffffff !important;
       padding: 10px 22px;
       border-radius: 999px;

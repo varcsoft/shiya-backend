@@ -121,7 +121,7 @@ console.log(itemsRows)
     }
 
     .header {
-      background-color: #006c67;
+      background-color: #ffffff;
       padding: 24px 20px;
       text-align: center;
       color: #ffffff;
