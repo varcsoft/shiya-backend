@@ -94,8 +94,6 @@ const markCaptured = async ({
       paymentMethod: transaction.method,
       transactionId: transaction.id,
       billNumber: true,
-      bisHallmark: true,
-      certificateAvailable: true,
       shippingAddress:
         transaction.order.address.addressline1 +
         transaction.order.address.addressline2 +

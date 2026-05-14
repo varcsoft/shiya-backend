@@ -40,8 +40,6 @@ const orderConfirmationEmail = (
     deliveryMethod: "",
     shippingAddress: "",
     expectedDeliveryDate: "",
-    bisHallmark: false,
-    certificateAvailable: false,
     customInstructions: "",
     items: [],
   },
@@ -71,9 +69,6 @@ const orderConfirmationEmail = (
   const paymentStatus = safeString(data.paymentStatus);
   const paymentMethod = safeString(data.paymentMethod);
   const transactionId = safeString(data.transactionId);
-
-  const bisHallmark = Boolean(data.bisHallmark);
-  const certificateAvailable = Boolean(data.certificateAvailable);
 
   const itemsRows = itemsInput
     .map(
@@ -355,7 +350,6 @@ console.log(itemsRows)
           class="logo"
         />
         <div class="brand-name">${env.APP_NAME}</div>
-        <div class="tagline">Shine Beyond Time</div>
         <div class="header-title">${env.APP_NAME} Order Confirmation</div>
         <div class="order-meta">${orderNumber ? `Order Number: <strong>#${orderNumber}</strong>` : ""}</div>
       </div>
@@ -412,20 +406,6 @@ console.log(itemsRows)
             <div class="kv">
               <div class="k">Transaction ID</div>
               <div class="v">${transactionId || "-"}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-title">Certification</div>
-          <div class="grid">
-            <div class="kv">
-              <div class="k">BIS Hallmark</div>
-              <div class="v">${yesNo(bisHallmark)}</div>
-            </div>
-            <div class="kv">
-              <div class="k">Certificate Available</div>
-              <div class="v">${yesNo(certificateAvailable)}</div>
             </div>
           </div>
         </div>
