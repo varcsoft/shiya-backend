@@ -7,7 +7,6 @@ import productRoutes from "./product.js";
 import orderRoutes from "./order.js";
 import categoryRoutes from "./category.js";
 import imagesRoutes from "./images.js";
-
 import subcategoryRoutes from "./subcategory.js";
 import cartRoutes from "./cart.js";
 import variantRoutes from "./variant.js";

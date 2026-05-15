@@ -54,6 +54,12 @@ export const env = {
 
   RAZORPAY_WEBHOOK_SECRET: process.env.RAZORPAY_WEBHOOK_SECRET,
   EMAIL_LOGO_URL: process.env.EMAIL_LOGO_URL,
+
+  // Delhivery Configuration
+  DELHIVERY_BASE_URL: process.env.DELHIVERY_BASE_URL,
+  DELHIVERY_TOKEN: process.env.DELHIVERY_TOKEN,
+  DELHIVERY_TIMEOUT_MS: process.env.DELHIVERY_TIMEOUT_MS,
+
   // Reflect Mail Configuration
   REFLECT_API_URL: process.env.REFLECT_API_URL,
   REFLECT_SMTP_USERNAME: process.env.REFLECT_SMTP_USERNAME,
