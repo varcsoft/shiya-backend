@@ -58,13 +58,5 @@
   "engines": {
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Devskarma/backend.git"
-  },
-  "bugs": {
-    "url": "https://github.com/Devskarma/backend/issues"
-  },
-  "homepage": "https://github.com/Devskarma/backend#readme"
+  }
 }

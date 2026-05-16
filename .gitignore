@@ -3,3 +3,5 @@
 /logs
 /keys/firebase/shiya.json
 .env
+package-lock.json
+pnpm-lock.yaml

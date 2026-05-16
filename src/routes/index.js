@@ -18,11 +18,9 @@ import homeRoutes from "./home.js";
 import faqRoutes from "./faq.js";
 import utilRoutes from "./util.js";
 import superspecificationRoutes from "./superspecification.js";
-
-
+import shipmentRoutes from "./shipment.js";
 
 export const initRoutes = (app) => {
-  
   app.use("/health", healthRoutes);
   app.use("/emailtemplates", emailTemplatesRoutes);
   // API routes
@@ -33,15 +31,16 @@ export const initRoutes = (app) => {
   app.use("/category", categoryRoutes);
   app.use("/collection", collectionRoutes);
   app.use("/wishlist", wishlistRoutes);
-  app.use("/superspecification" , superspecificationRoutes);
+  app.use("/superspecification", superspecificationRoutes);
   app.use("/subcategory", subcategoryRoutes);
   app.use("/product", productRoutes);
   app.use("/cart", cartRoutes);
   app.use("/variant", variantRoutes);
   app.use("/order", orderRoutes);
+  app.use("/util", utilRoutes);
+  app.use("/shippment", shipmentRoutes);
   app.use("/auth", authRoutes);
   app.use("/url", urlRoutes);
-  app.use("/util", utilRoutes);
   app.use("/webhooks", webhooks);
 
   // app.use("/upload", uploadRoutes);

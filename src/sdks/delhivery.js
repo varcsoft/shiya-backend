@@ -75,7 +75,14 @@ class DelhiveryApiError extends Error {
 }
 
 const validateShipment = (shipment = {}) => {
-  const requiredFields = ["name", "order", "phone", "add", "pin", "payment_mode"];
+  const requiredFields = [
+    "name",
+    "order",
+    "phone",
+    "add",
+    "pin",
+    "payment_mode",
+  ];
   const missingFields = requiredFields.filter((field) => {
     const value = shipment?.[field];
     if (Array.isArray(value)) {
@@ -92,10 +99,13 @@ const validateShipment = (shipment = {}) => {
   }
 
   if (!isValidPincode(shipment.pin)) {
-    throw new DelhiveryApiError("Shipment pin must be a valid 6-digit pincode", {
-      pin: shipment.pin,
-      shipmentOrder: safeString(shipment?.order),
-    });
+    throw new DelhiveryApiError(
+      "Shipment pin must be a valid 6-digit pincode",
+      {
+        pin: shipment.pin,
+        shipmentOrder: safeString(shipment?.order),
+      },
+    );
   }
 
   if (safeString(shipment.order).length > 50) {
@@ -317,7 +327,8 @@ class DelhiverySDK {
       });
 
       if (shouldRetry) {
-        const retryDelayMs = error?.response?.status === 403 ? 30000 : 1000 * (attempt + 1);
+        const retryDelayMs =
+          error?.response?.status === 403 ? 30000 : 1000 * (attempt + 1);
         await sleep(retryDelayMs);
         return this.request(
           {
@@ -343,17 +354,20 @@ class DelhiverySDK {
     }
   }
 
-  async getPincodeServiceability({ filter_codes } = {}) {
-    if (!isValidPincode(filter_codes)) {
-      throw new DelhiveryApiError("filter_codes must be a valid 6-digit pincode", {
-        filter_codes,
-      });
+  async getPincodeServiceability(filterCode) {
+    if (!isValidPincode(filterCode)) {
+      throw new DelhiveryApiError(
+        "filterCode must be a valid 6-digit pincode",
+        {
+          filterCode,
+        },
+      );
     }
 
     return this.request({
       method: "GET",
       path: DELHIVERY_PATHS.pincodeServiceability,
-      params: { filter_codes: safeString(filter_codes) },
+      params: { filter_codes: safeString(filterCode) },
       headers: this.buildHeaders(),
       apiName: "pincode_serviceability",
     });
@@ -381,9 +395,12 @@ class DelhiverySDK {
     }
 
     if (waybillList.length > 50) {
-      throw new DelhiveryApiError("Tracking supports up to 50 waybills per request", {
-        count: waybillList.length,
-      });
+      throw new DelhiveryApiError(
+        "Tracking supports up to 50 waybills per request",
+        {
+          count: waybillList.length,
+        },
+      );
     }
 
     return this.request({
@@ -436,7 +453,14 @@ class DelhiverySDK {
     });
   }
 
-  async createPickupRequest(payload = {}) {
+  async createPickupRequest(
+    payload = {
+      pickup_time: "",
+      pickup_date: "",
+      pickup_location: "",
+      expected_package_count: 0,
+    },
+  ) {
     validatePickupRequest(payload);
 
     return this.request({
@@ -459,7 +483,9 @@ class DelhiverySDK {
     }
 
     if (safeString(cancellation) !== "true") {
-      throw new DelhiveryApiError('cancellation must be the string literal "true"');
+      throw new DelhiveryApiError(
+        'cancellation must be the string literal "true"',
+      );
     }
 
     return this.request({

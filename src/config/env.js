@@ -7,7 +7,7 @@ if (!process.env.PORT) {
 }
 
 const RAZORPAY_MODE = process.env.MODE_RAZORPAY || "TEST";
-
+const DELHIVERY_MODE = process.env.MODE_DELHIVERY || "TEST";
 export const env = {
   APP_NAME: process.env.APP_NAME,
 
@@ -56,8 +56,16 @@ export const env = {
   EMAIL_LOGO_URL: process.env.EMAIL_LOGO_URL,
 
   // Delhivery Configuration
-  DELHIVERY_BASE_URL: process.env.DELHIVERY_BASE_URL,
-  DELHIVERY_TOKEN: process.env.DELHIVERY_TOKEN,
+  DELHIVERY_BASE_URL:
+    DELHIVERY_MODE === "TEST"
+      ? process.env.DELHIVERY_API_URL_TEST
+      : process.env.DELHIVERY_API_URL,
+
+  DELHIVERY_TOKEN:
+    DELHIVERY_MODE === "TEST"
+      ? process.env.DELHIVERY_TOKEN
+      : process.env.DELHIVERY_TOKEN,
+
   DELHIVERY_TIMEOUT_MS: process.env.DELHIVERY_TIMEOUT_MS,
 
   // Reflect Mail Configuration
