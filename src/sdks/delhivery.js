@@ -1,27 +1,31 @@
 import axios from "axios";
 import { env } from "../config/env.js";
 import logger from "../utils/logger.js";
-
+// Test Environment URL
+// https://staging-express.delhivery.com/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=110053&o_pin=110042&cgm=10&pt=Pre-paid
+// Production Environment URL
+// https://track.delhivery.com/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=110053&o_pin=110042&cgm=10&pt=Pre-paid
 const DELHIVERY_PATHS = {
   pincodeServiceability: "/c/api/pin-codes/json/",
   tracking: "/api/v1/packages/json/",
   shipmentCreation: "/api/cmu/create.json",
   pickupRequest: "/fm/request/new/",
   cancelShipment: "/api/p/edit",
+  waybillFetch: "/api/fetch/json/",
+  calculateCost: "/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=110053&o_pin=110042&cgm=10&pt=Pre-paid/",
 };
-
+const delhiveryApi = axios.create({
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Token ${env.DELHIVERY_TOKEN}`,
+  },
+});
 const DEFAULT_TIMEOUT_MS = 10000;
 const MAX_RETRY_ATTEMPTS = 2;
 const RETRYABLE_STATUS_CODES = new Set([403, 408, 429, 500, 502, 503, 504]);
 const DISALLOWED_SHIPMENT_CHARACTERS = /[&%#;\\]/;
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
 const safeString = (value) => (value == null ? "" : String(value)).trim();
-const safeNumber = (value) => {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : 0;
-};
 
 const compactObject = (value) => {
   if (Array.isArray(value)) {
@@ -46,25 +50,8 @@ const compactObject = (value) => {
   }, {});
 };
 
-const maskToken = (token) => {
-  const safeToken = safeString(token);
-  if (!safeToken) return "";
-  if (safeToken.length <= 8) return `${safeToken}***`;
-  return `${safeToken.slice(0, 8)}***`;
-};
-
 const isValidPincode = (value) => /^[1-9][0-9]{5}$/.test(safeString(value));
 
-const isProbablyRetryableError = (error) => {
-  const statusCode = error?.response?.status;
-  const errorCode = safeString(error?.code);
-
-  return (
-    RETRYABLE_STATUS_CODES.has(statusCode) ||
-    errorCode === "ECONNABORTED" ||
-    errorCode === "ETIMEDOUT"
-  );
-};
 
 class DelhiveryApiError extends Error {
   constructor(message, details = {}) {
@@ -162,217 +149,16 @@ const validatePickupRequest = (payload = {}) => {
 };
 
 class DelhiverySDK {
-  constructor({
-    baseURL = env.DELHIVERY_BASE_URL,
-    token = env.DELHIVERY_TOKEN,
-    timeout = safeNumber(env.DELHIVERY_TIMEOUT_MS) || DEFAULT_TIMEOUT_MS,
-  } = {}) {
-    this.baseURL = safeString(baseURL);
-    this.token = safeString(token);
-    this.timeout = timeout;
-
-    this.client = axios.create({
-      baseURL: this.baseURL,
-      timeout: this.timeout,
-    });
-  }
-
-  assertConfigured() {
-    const missing = [];
-
-    if (!this.baseURL) {
-      missing.push("DELHIVERY_BASE_URL");
-    }
-    if (!this.token) {
-      missing.push("DELHIVERY_TOKEN");
-    }
-
-    if (missing.length) {
-      throw new DelhiveryApiError("Missing Delhivery configuration", {
-        missing,
-      });
-    }
-  }
-
-  buildHeaders({
-    token = this.token,
-    authScheme = "Token",
-    contentType = "application/json",
-    extraHeaders = {},
-  } = {}) {
-    const headers = {
-      Accept: "application/json",
-      ...extraHeaders,
-    };
-
-    if (contentType) {
-      headers["Content-Type"] = contentType;
-    }
-
-    if (token) {
-      headers.Authorization = `${authScheme} ${token}`;
-    }
-
-    return headers;
-  }
-
-  normalizeError(error, context = {}) {
-    if (error instanceof DelhiveryApiError) {
-      return error;
-    }
-
-    const statusCode = error?.response?.status;
-    const responseData = error?.response?.data;
-    const responseText =
-      typeof responseData === "string"
-        ? responseData
-        : responseData?.error ||
-          responseData?.Error ||
-          responseData?.rmk ||
-          responseData?.remark ||
-          error?.message ||
-          "Delhivery API request failed";
-
-    return new DelhiveryApiError(responseText, {
-      statusCode,
-      responseData,
-      context,
-      code: error?.code,
-    });
-  }
-
-  getBusinessErrorMessage(data) {
-    if (!data || typeof data !== "object") {
-      return "";
-    }
-
-    if (data.Success === false) {
-      return safeString(data.Error || data.rmk);
-    }
-
-    if (data.success === false) {
-      return safeString(data.message || data.rmk || data.error);
-    }
-
-    if (data.status === false) {
-      return safeString(data.error || data.remark || data.rmk);
-    }
-
-    return "";
-  }
-
-  async request(
-    {
-      method,
-      path,
-      params,
-      data,
-      headers,
-      timeout,
-      apiName,
-      retryAttempts = MAX_RETRY_ATTEMPTS,
-    },
-    attempt = 0,
-  ) {
-    this.assertConfigured();
-
-    const startedAt = Date.now();
-    const requestConfig = {
-      method,
-      url: path,
-      params,
-      data,
-      headers,
-      timeout: timeout || this.timeout,
-    };
-
-    logger.info("Delhivery API request", {
-      api: apiName,
-      method,
-      path,
-      params,
-      token: maskToken(this.token),
-      attempt: attempt + 1,
-    });
-
-    try {
-      const response = await this.client(requestConfig);
-      const businessError = this.getBusinessErrorMessage(response.data);
-
-      if (businessError) {
-        throw new DelhiveryApiError(businessError, {
-          statusCode: response.status,
-          responseData: response.data,
-          apiName,
-        });
-      }
-
-      logger.info("Delhivery API response", {
-        api: apiName,
-        statusCode: response.status,
-        durationMs: Date.now() - startedAt,
-      });
-
-      return response.data;
-    } catch (error) {
-      const shouldRetry =
-        attempt < retryAttempts && isProbablyRetryableError(error);
-
-      logger.warn("Delhivery API error", {
-        api: apiName,
-        statusCode: error?.response?.status,
-        durationMs: Date.now() - startedAt,
-        error: error?.message,
-        retrying: shouldRetry,
-      });
-
-      if (shouldRetry) {
-        const retryDelayMs =
-          error?.response?.status === 403 ? 30000 : 1000 * (attempt + 1);
-        await sleep(retryDelayMs);
-        return this.request(
-          {
-            method,
-            path,
-            params,
-            data,
-            headers,
-            timeout,
-            apiName,
-            retryAttempts,
-          },
-          attempt + 1,
-        );
-      }
-
-      throw this.normalizeError(error, {
-        apiName,
-        method,
-        path,
-        params,
-      });
-    }
-  }
-
   async getPincodeServiceability(filterCode) {
-    if (!isValidPincode(filterCode)) {
-      throw new DelhiveryApiError(
-        "filterCode must be a valid 6-digit pincode",
-        {
-          filterCode,
-        },
-      );
-    }
-
-    return this.request({
-      method: "GET",
-      path: DELHIVERY_PATHS.pincodeServiceability,
+    return delhiveryApi.get(DELHIVERY_PATHS.pincodeServiceability, {
       params: { filter_codes: safeString(filterCode) },
-      headers: this.buildHeaders(),
-      apiName: "pincode_serviceability",
     });
   }
-
+  async getSingleWaybill(waybill) {
+    return delhiveryApi.get(DELHIVERY_PATHS.tracking, {
+      params: { waybill: safeString(waybill) },
+    });
+  }
   async trackPackages({ waybill, ref_ids } = {}) {
     const waybillList = Array.isArray(waybill)
       ? waybill.map((item) => safeString(item)).filter(Boolean)
@@ -403,15 +189,11 @@ class DelhiverySDK {
       );
     }
 
-    return this.request({
-      method: "GET",
-      path: DELHIVERY_PATHS.tracking,
+    return delhiveryApi.get(DELHIVERY_PATHS.tracking, {
       params: compactObject({
         waybill: waybillList.length ? waybillList.join(",") : undefined,
         ref_ids: referenceIds.length ? referenceIds.join(",") : undefined,
       }),
-      headers: this.buildHeaders(),
-      apiName: "tracking",
     });
   }
 
@@ -463,40 +245,22 @@ class DelhiverySDK {
   ) {
     validatePickupRequest(payload);
 
-    return this.request({
-      method: "POST",
-      path: DELHIVERY_PATHS.pickupRequest,
+    return delhiveryApi.post(DELHIVERY_PATHS.pickupRequest, {
       data: compactObject({
         pickup_time: safeString(payload.pickup_time),
         pickup_date: safeString(payload.pickup_date),
         pickup_location: safeString(payload.pickup_location),
         expected_package_count: Number(payload.expected_package_count),
       }),
-      headers: this.buildHeaders(),
-      apiName: "pickup_request",
     });
   }
 
   async cancelShipment({ waybill, cancellation = "true" } = {}) {
-    if (!safeString(waybill)) {
-      throw new DelhiveryApiError("waybill is required to cancel a shipment");
-    }
-
-    if (safeString(cancellation) !== "true") {
-      throw new DelhiveryApiError(
-        'cancellation must be the string literal "true"',
-      );
-    }
-
-    return this.request({
-      method: "POST",
-      path: DELHIVERY_PATHS.cancelShipment,
+    return delhiveryApi.post(DELHIVERY_PATHS.cancelShipment, {
       data: {
         waybill: safeString(waybill),
         cancellation: "true",
       },
-      headers: this.buildHeaders(),
-      apiName: "cancel_shipment",
     });
   }
 }

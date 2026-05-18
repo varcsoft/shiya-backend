@@ -1,40 +1,34 @@
+model transaction {
+  id                 String            @id @db.Uuid
+  userId             String?           @db.Uuid
+  gateway_order_id   String?           @unique
+  gateway_payment_id String?           @unique
+  status             TransactionStatus @default(CREATED)
+  amount             Int
+  currency           String            @default("INR")
+  fee                Int?
+  tax                Int?
+  base_amount        Int?
+  method             String?
+  vpa                String?
+  email              String?
+  contact            String?
+  captured           Boolean           @default(false)
+  authorizedAt       DateTime?
+  capturedAt         DateTime?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  order              order?
+  user               User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([gateway_order_id])
+  @@index([gateway_payment_id])
+}
+
 enum TransactionStatus {
   CREATED
   AUTHORIZED
   PAID
   FAILED
   REFUNDED
-}
-
-model transaction {
-  id     String  @id @db.Uuid
-  userId String? @db.Uuid
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  gateway_order_id   String? @unique
-  gateway_payment_id String? @unique
-
-  status TransactionStatus @default(CREATED)
-
-  amount      Int // in paise
-  currency    String @default("INR")
-  fee         Int?
-  tax         Int?
-  base_amount Int?
-
-  method  String? // upi, card, netbanking
-  vpa     String?
-  email   String?
-  contact String?
-
-  captured     Boolean   @default(false)
-  authorizedAt DateTime?
-  capturedAt   DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  order     order?
-
-  @@index([gateway_order_id])
-  @@index([gateway_payment_id])
 }

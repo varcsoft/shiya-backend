@@ -41,6 +41,9 @@ router.get("/store", getAllStoreProductsC);
 router.get("/search", productSearchC);
 router.get("/:id", getProductByIdC);
 
-router.delete("/:id", auth.authenticateToken, deleteProductC);
+router.delete("/:id",
+  auth.authenticateToken,
+  auth.requireAdmin,
+  deleteProductC);
 
 export default router;

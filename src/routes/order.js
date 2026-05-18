@@ -49,6 +49,11 @@ router.put(
 
 router.get("/:id", auth.authenticateToken, getOrderByIdC);
 
-router.delete("/:id", auth.authenticateToken, deleteOrderC);
+router.delete(
+  "/:id",
+  auth.authenticateToken,
+  auth.requireAdmin,
+  deleteOrderC
+);
 
 export default router;

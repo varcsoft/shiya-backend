@@ -21,18 +21,26 @@ const variantSchema = z
     label: z.string().optional(),
     quantityType: z.enum(QuantityType, "Invalid quantity type"),
     rating: z
-      .number()
+      .number("Please Enter a rating value")
       .min(0, "Rating must be non-negative")
       .max(5, "Rating must be less than or equal to 5"),
-    price: z.number().min(0, "Price must be non-negative"),
-    stock: z.number().min(0, "Stock quantity must be non-negative"),
+    price: z
+      .number("Please Enter a price value")
+      .min(0, "Price must be non-negative"),
+    stock: z
+      .number("Please Enter a stock quantity value")
+      .min(0, "Stock quantity must be non-negative"),
     offerPrice: z
-      .number()
+      .number("Please Enter an offer price value")
       .min(0, "Offer price must be non-negative")
       .optional(),
     specifications: specificationsSchema,
     enableOffer: z.boolean().optional().default(false),
-    images: z.array(imageSchema).min(0, "At least one image is required").optional().nullable(),
+    images: z
+      .array(imageSchema)
+      .min(0, "At least one image is required")
+      .optional()
+      .nullable(),
   })
   .strict();
 
@@ -42,13 +50,17 @@ const variantStandaloneSchema = z
     label: z.string().optional(),
     quantityType: z.enum(QuantityType, "Invalid quantity type"),
     rating: z
-      .number()
+      .number("Please Enter a rating value")
       .min(0, "Rating must be non-negative")
       .max(5, "Rating must be less than or equal to 5"),
-    price: z.number().min(0, "Price must be non-negative"),
-    stock: z.number().min(0, "Stock quantity must be non-negative"),
+    price: z
+      .number("Please Enter a price value")
+      .min(0, "Price must be non-negative"),
+    stock: z
+      .number("Please Enter a stock quantity value")
+      .min(0, "Stock quantity must be non-negative"),
     offerPrice: z
-      .number()
+      .number("Please Enter an offer price value")
       .min(0, "Offer price must be non-negative")
       .optional(),
     specifications: specificationsSchema,
@@ -66,10 +78,12 @@ const updateVariantStandaloneSchema = z
     productId: z.uuidv7(),
     label: z.string().optional(),
     rating: z
-      .number()
+      .number("Please Enter a rating value")
       .min(0, "Rating must be non-negative")
       .max(5, "Rating must be less than or equal to 5"),
-    price: z.number().min(0, "Price must be non-negative"),
+    price: z
+      .number("Please Enter a price value")
+      .min(0, "Price must be non-negative"),
     images: z
       .array(imageSchema)
       .min(0, "At least one image is required")
@@ -77,13 +91,15 @@ const updateVariantStandaloneSchema = z
       .nullable(),
     quantityType: z.enum(QuantityType, "Invalid quantity type"),
     offerPrice: z
-      .number()
+      .number("Please Enter an offer price value")
       .min(0, "Offer price must be non-negative")
       .optional(),
     deleted: z.boolean().default(false),
     specifications: specificationsSchema,
     enableOffer: z.boolean().default(false),
-    stock: z.number().min(0, "Stock quantity must be non-negative"),
+    stock: z
+      .number("Please Enter a stock quantity value")
+      .min(0, "Stock quantity must be non-negative"),
   })
   .strict();
 
@@ -92,20 +108,24 @@ const productSchema = z
     name: z.string().min(1, "Name is required"),
     description: z.string().min(1, "Description is required"),
     rating: z
-      .number()
+      .number("Please Enter a rating value")
       .min(0, "Rating must be non-negative")
       .max(5, "Rating must be less than or equal to 5"),
-    price: z.number().min(0, "Price must be non-negative"),
+    price: z
+      .number("Please Enter a price value")
+      .min(0, "Price must be non-negative"),
     images: z.array(imageSchema).min(1, "At least one image is required"),
     deleted: z.boolean().default(false),
     details: z.array(z.string()).optional().nullable(),
     offerPrice: z
-      .number()
+      .number("Please Enter an offer price value")
       .min(0, "Offer price must be non-negative")
       .optional(),
     enableOffer: z.boolean().default(false),
     specifications: specificationsSchema,
-    stock: z.number().min(0, "Stock quantity must be non-negative"),
+    stock: z
+      .number("Please Enter a stock quantity value")
+      .min(0, "Stock quantity must be non-negative"),
     quantityType: z.enum(QuantityType, "Invalid quantity type"),
     categoryId: z.uuidv7().optional(),
     subcategoryId: z.uuidv7().optional(),

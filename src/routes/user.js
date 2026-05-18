@@ -7,7 +7,7 @@ import {
   updatePasswordSchema,
   updateProfileSchema,
 } from "../Models/Validations/ProfileSchema.js";
-// import { checkPinCodeServiceAvailable } from "../middleware/pincodeServicable.js";
+import { checkPinCodeServiceAvailable } from "../middleware/pincodeServicable.js";
 
 const router = express.Router();
 
@@ -38,7 +38,7 @@ router.post(
   "/address",
   verifySchema(addressSchema),
   authMiddleware.authenticateToken,
-  // checkPinCodeServiceAvailable,
+  checkPinCodeServiceAvailable,
   userController.addAddress,
 );
 
