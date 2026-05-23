@@ -12,10 +12,10 @@ import {
 
 const createShipmentC = async (req, res) => {
   try {
-    // const waybillNumber = delhiverySdk.;
-
+    const waybillNumber = await delhiverySdk.getSingleWaybill();
+    console.log(waybillNumber);
     const shipment = await createShipment(req.body);
-    response.sendSuccess(
+    return response.sendSuccess(
       res,
       200,
       999,
@@ -23,7 +23,8 @@ const createShipmentC = async (req, res) => {
       shipment,
     );
   } catch (err) {
-    response.sendError(res, 500, 999, "Unable to create shipment");
+    console.error(err.response);
+    return response.sendError(res, 500, 999, "Unable to create shipment");
   }
 };
 const updateShipmentC = async (req, res) => {
@@ -68,10 +69,34 @@ const cancelShipmentC = async (req, res) => {
     response.sendError(res, 500, 999, "Unable to cancel shipment");
   }
 };
-
+const createWarehouseC = async (req, res) => {
+  try {
+    const warehouse = await delhiverySdk.createWarehouse(req.body);
+    return response.sendSuccess(
+      res,
+      200,
+      999,
+      "Warehouse created successfully",
+      warehouse,
+    );
+  } catch (err) {
+    console.error(err.response.data);
+    return response.sendError(res, 500, 999, "Unable to create warehouse");
+  }
+};
 export {
   createShipmentC,
   updateShipmentC,
   trackShipmentByWaybillC,
   cancelShipmentC,
+  createWarehouseC,
 };
+
+const a = 10;
+const b = 10;
+console.log(a ^ b)
+if (a ^ b) {
+  console.log("a is b");
+} else {
+  console.log("a is not b");
+}

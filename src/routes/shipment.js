@@ -5,6 +5,7 @@ import {
   cancelShipmentC,
   createShipmentC,
   updateShipmentC,
+  createWarehouseC,
 } from "../controllers/shipmentController.js";
 import verifySchema from "../config/myzod.js";
 import { pinCodeSchema } from "../Models/Validations/UtilSchema.js";
@@ -22,23 +23,29 @@ router.post(
   verifyPinCodeC,
 );
 router.post(
+  "/warehouse/create",
+  // verifySchema(pinCodeSchema),
+  auth.authenticateToken,
+  createWarehouseC,
+);
+router.post(
   "/create",
   verifySchema(shipmentSchema),
-  auth.requireAdmin,
   auth.authenticateToken,
+  auth.requireAdmin,
   createShipmentC,
 );
 router.put(
   "/:id",
   verifySchema(updateShipmentSchema),
-  auth.requireAdmin,
   auth.authenticateToken,
+  auth.requireAdmin,
   updateShipmentC,
 );
 router.delete(
   "/:id",
-  auth.requireAdmin,
   auth.authenticateToken,
+  auth.requireAdmin,
   cancelShipmentC,
 );
 

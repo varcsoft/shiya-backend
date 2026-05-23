@@ -88,7 +88,7 @@ export const authenticateCookies = async (req, res, next) => {
  * Middleware to check if user has admin privileges
  */
 export const requireAdmin = (req, res, next) => {
-  console.log(req.user.role);
+  console.log(req.user);
   if (req.user.role.name != roles.ADMIN) {
     return response.sendError(res, 403, 1005);
   }

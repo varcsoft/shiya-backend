@@ -5,16 +5,20 @@ import logger from "../utils/logger.js";
 // https://staging-express.delhivery.com/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=110053&o_pin=110042&cgm=10&pt=Pre-paid
 // Production Environment URL
 // https://track.delhivery.com/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=110053&o_pin=110042&cgm=10&pt=Pre-paid
+
 const DELHIVERY_PATHS = {
+  createWarehouse: "/api/backend/clientwarehouse/create/",
   pincodeServiceability: "/c/api/pin-codes/json/",
   tracking: "/api/v1/packages/json/",
   shipmentCreation: "/api/cmu/create.json",
   pickupRequest: "/fm/request/new/",
   cancelShipment: "/api/p/edit",
-  waybillFetch: "/api/fetch/json/",
-  calculateCost: "/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=110053&o_pin=110042&cgm=10&pt=Pre-paid/",
+  waybillFetch: "waybill/api/bulk/json/?count=1",
+  calculateCost:
+    "/api/kinko/v1/invoice/charges/.json?md=E&ss=Delivered&d_pin=110053&o_pin=110042&cgm=10&pt=Pre-paid/",
 };
 const delhiveryApi = axios.create({
+  baseURL: env.DELHIVERY_BASE_URL,
   headers: {
     "Content-Type": "application/json",
     Authorization: `Token ${env.DELHIVERY_TOKEN}`,
@@ -51,7 +55,6 @@ const compactObject = (value) => {
 };
 
 const isValidPincode = (value) => /^[1-9][0-9]{5}$/.test(safeString(value));
-
 
 class DelhiveryApiError extends Error {
   constructor(message, details = {}) {
@@ -154,11 +157,11 @@ class DelhiverySDK {
       params: { filter_codes: safeString(filterCode) },
     });
   }
-  async getSingleWaybill(waybill) {
-    return delhiveryApi.get(DELHIVERY_PATHS.tracking, {
-      params: { waybill: safeString(waybill) },
-    });
+
+  async getSingleWaybill() {
+    return delhiveryApi.get(DELHIVERY_PATHS.waybillFetch);
   }
+
   async trackPackages({ waybill, ref_ids } = {}) {
     const waybillList = Array.isArray(waybill)
       ? waybill.map((item) => safeString(item)).filter(Boolean)
@@ -254,7 +257,64 @@ class DelhiverySDK {
       }),
     });
   }
+  async createWarehouse(payload = {}) {
+    return delhiveryApi.post(DELHIVERY_PATHS.createWarehouse, {
+      data: compactObject(payload),
+    });
+  }
+// {
+//   "data": {
+//     "active": true,
+//     "address": "BDD CHAWL NO: -84, R00M NO: -3, DN WAKRIKAR MARG",
+//     "business_days": [
+//       "MON",
+//       "TUE",
+//       "WED",
+//       "THU",
+//       "FRI",
+//       "SAT"
+//     ],
+//     "business_hours": {
+//       "FRI": {
+//         "close_time": "18:30",
+//         "start_time": "09:30"
+//       },
+//       "MON": {
+//         "close_time": "18:30",
+//         "start_time": "09:30"
+//       },
+//       "SAT": {
+//         "close_time": "18:30",
+//         "start_time": "09:30"
+//       },
+//       "THU": {
+//         "close_time": "18:30",
+//         "start_time": "09:30"
+//       },
+//       "TUE": {
+//         "close_time": "18:30",
+//         "start_time": "09:30"
+//       },
+//       "WED": {
+//         "close_time": "18:30",
+//         "start_time": "09:30"
+//       }
+//     },
+//     "client": "946d93-VARCSOFT-do-cdp",
+//     "largest_vehicle_constraint": null,
+//     "message": "A new client warehouse has been created in HQ(Delhivery).",
+//     "name": "BDD CHAWL NO: -84, R00M NO: -3, DN WAKRIKAR MARG",
+//     "phone": "7738508405",
+//     "pincode": 400018,
+//     "type_of_clientwarehouse": null
+//   },
+//   "error": "",
+//   "success": true
+// }
 
+// 946d93-VARCSOFT-do-cdp
+
+// 85410910000136
   async cancelShipment({ waybill, cancellation = "true" } = {}) {
     return delhiveryApi.post(DELHIVERY_PATHS.cancelShipment, {
       data: {

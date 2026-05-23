@@ -8,7 +8,6 @@ import { generateUUID } from "./config/database.js";
 // import trialService from "./services/trialService.js";
 
 try {
-  console.log(generateUUID())
   const app = express();
   app.use(express.json({ limit: "10mb" }));
   app.use(express.urlencoded({ extended: true, limit: "10mb" }));

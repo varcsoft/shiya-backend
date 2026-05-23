@@ -7,7 +7,7 @@ const relfectApi = axios.create({
 
 const sendEmail = async ({ from, to, replyTo, subject, html }) => {
   try {
-    await relfectApi.post("/email/sendMail", {
+    await relfectApi.post("/channel/email/sendMail", {
       username: env.REFLECT_SMTP_USERNAME,
       key: env.REFLECT_SMTP_PASSWORD,
       name: env.APP_NAME,
