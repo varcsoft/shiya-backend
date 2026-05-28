@@ -42,7 +42,6 @@ export const initRoutes = (app) => {
   app.use("/auth", authRoutes);
   app.use("/url", urlRoutes);
   app.use("/webhooks", webhooks);
-
   // app.use("/upload", uploadRoutes);
   app.use("/user", userRoutes);
   app.use("/admin", adminRoutes);

@@ -3,6 +3,9 @@ import axios from "axios";
 
 const relfectApi = axios.create({
   baseURL: env.REFLECT_API_URL,
+  headers: {
+    Authorization: "Bearer " + env.REFLECT_API_KEY,
+  }
 });
 
 const sendEmail = async ({ from, to, replyTo, subject, html }) => {
