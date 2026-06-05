@@ -4,7 +4,7 @@ import analyticsEmail from "../templates/mail/analyticsEmail.js";
 import { generateAnalytics } from "../services/analytics/index.js";
 
 nodeCron.schedule(
-  "* 30 8 * * *",
+  "0 40 8 * * *",
   async () => {
     console.log("Running analytics job");
     try {
